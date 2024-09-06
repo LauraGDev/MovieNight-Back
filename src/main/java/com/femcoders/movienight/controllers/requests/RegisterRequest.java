@@ -1,4 +1,4 @@
-package com.femcoders.movienight.auth;
+package com.femcoders.movienight.controllers.requests;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,9 +7,10 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class LoginRequest {
-    String username;
+@NoArgsConstructor
+public class RegisterRequest {
+    String name;
+    String email;
     String password;
 }
