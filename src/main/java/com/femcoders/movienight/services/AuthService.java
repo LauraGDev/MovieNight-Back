@@ -1,6 +1,8 @@
 package com.femcoders.movienight.services;
 
 import com.femcoders.movienight.config.jwt.JwtService;
+import com.femcoders.movienight.exceptions.EmailAlreadyExistsException;
+import com.femcoders.movienight.exceptions.EmailNotFoundException;
 import com.femcoders.movienight.models.Role;
 import com.femcoders.movienight.models.User;
 import com.femcoders.movienight.controllers.responses.AuthResponse;
@@ -25,9 +27,10 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public AuthResponse login(LoginRequest request) {
+        UserDetails user = userRepository.findByEmail(request.getEmail()).orElseThrow(() ->
+                new EmailNotFoundException("No se encontró ningún usuario con ese email."));
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.getEmail(), request.getPassword()));
-        UserDetails user = userRepository.findByEmail(request.getEmail()).orElseThrow();
         String token = jwtService.getToken(user);
         return AuthResponse.builder()
                 .token(token)
@@ -36,6 +39,9 @@ public class AuthService {
     }
 
     public AuthResponse register(RegisterRequest request) {
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new EmailAlreadyExistsException("Ya existe un usuario con ese email.");
+        }
         User user = User.builder()
                 .name(request.getName())
                 .email(request.getEmail())
