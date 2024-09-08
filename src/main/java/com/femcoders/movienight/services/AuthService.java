@@ -30,11 +30,10 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public AuthResponse login(LoginRequest request) {
-        UserDetails user = userRepository.findByEmail(request.getEmail()).orElseThrow(() ->
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() ->
                 new EmailNotFoundException("No se encontró ningún usuario con ese email."));
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.getEmail(), request.getPassword()));
-        User user = userRepository.findByEmail(request.getEmail()).orElseThrow();
         UserDTO userDTO = UserDTO.builder()
                 .id(user.getId())
                 .email(user.getEmail())
