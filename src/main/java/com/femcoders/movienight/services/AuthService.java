@@ -3,6 +3,7 @@ package com.femcoders.movienight.services;
 import com.femcoders.movienight.config.jwt.JwtService;
 import com.femcoders.movienight.exceptions.EmailAlreadyExistsException;
 import com.femcoders.movienight.exceptions.EmailNotFoundException;
+import com.femcoders.movienight.controllers.responses.UserDTO;
 import com.femcoders.movienight.models.Role;
 import com.femcoders.movienight.models.User;
 import com.femcoders.movienight.controllers.responses.AuthResponse;
@@ -17,9 +18,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Service
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class AuthService {
     private final UserRepository userRepository;
     private final JwtService jwtService;
@@ -31,10 +34,15 @@ public class AuthService {
                 new EmailNotFoundException("No se encontró ningún usuario con ese email."));
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.getEmail(), request.getPassword()));
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+        UserDTO userDTO = UserDTO.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .name(user.getName()).build();
         String token = jwtService.getToken(user);
         return AuthResponse.builder()
                 .token(token)
-                .user(user)
+                .user(userDTO)
                 .build();
     }
 
