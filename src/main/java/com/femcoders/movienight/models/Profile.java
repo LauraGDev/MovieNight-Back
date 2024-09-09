@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name="accounts")
-public class Account {
+public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -27,6 +27,6 @@ public class Account {
                     referencedColumnName = "id"))
     private List<Content> content;
 
-    public Account() {
+    public Profile() {
     }
 }

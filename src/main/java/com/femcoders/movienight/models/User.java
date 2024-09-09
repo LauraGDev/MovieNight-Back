@@ -35,7 +35,7 @@ public class User implements UserDetails {
     Role role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Account> accounts;
+    private Set<Profile> profiles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
