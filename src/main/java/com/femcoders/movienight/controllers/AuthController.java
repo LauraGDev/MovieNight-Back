@@ -19,11 +19,17 @@ public class AuthController {
     @CrossOrigin("*")
     @PostMapping(value = "login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
-        return ResponseEntity.ok(authService.login(request));
+        AuthResponse response = authService.login(request);
+        String welcomeMessage = "Bienvenid@ de nuevo " + response.getUser().getName();
+        response.setMessage(welcomeMessage);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping(value = "register")
     public ResponseEntity<AuthResponse>  register(@RequestBody RegisterRequest request) {
-        return ResponseEntity.ok(authService.register(request));
+        AuthResponse response = authService.register(request);
+        String welcomeMessage = "Usuario registrado con éxito, ya puedes iniciar sesión.";
+        response.setMessage(welcomeMessage);
+        return ResponseEntity.ok(response);
     }
 }
