@@ -4,6 +4,7 @@ import com.femcoders.movienight.config.jwt.JwtService;
 import com.femcoders.movienight.exceptions.EmailAlreadyExistsException;
 import com.femcoders.movienight.exceptions.EmailNotFoundException;
 import com.femcoders.movienight.controllers.responses.UserDTO;
+import com.femcoders.movienight.models.Profile;
 import com.femcoders.movienight.models.Role;
 import com.femcoders.movienight.models.User;
 import com.femcoders.movienight.controllers.responses.AuthResponse;
@@ -22,12 +23,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Service
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
 public class AuthService {
     private final UserRepository userRepository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final ProfileService profileService;
 
     public AuthResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() ->
@@ -56,6 +57,11 @@ public class AuthService {
                 .role(Role.USER)
                 .build();
         userRepository.save(user);
+
+        Profile profile = new Profile();
+        profile.setUser(user);
+        profile.setName(user.getName());
+        profileService.addProfile(profile);
 
         return AuthResponse.builder()
                 .token(jwtService.getToken(user))

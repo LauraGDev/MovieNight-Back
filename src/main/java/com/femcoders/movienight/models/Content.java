@@ -34,7 +34,7 @@ public class Content {
                     referencedColumnName = "id"))
     private List<Genre> genres;
     @ManyToMany(mappedBy = "content")
-    private List<Account> accounts;
+    private List<Profile> profiles;
 
     public Content() {
     }
