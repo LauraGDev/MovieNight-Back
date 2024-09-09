@@ -28,6 +28,7 @@ public class AuthController {
     @PostMapping(value = "register")
     public ResponseEntity<AuthResponse>  register(@RequestBody RegisterRequest request) {
         AuthResponse response = authService.register(request);
+
         String welcomeMessage = "Usuario registrado con éxito, ya puedes iniciar sesión.";
         response.setMessage(welcomeMessage);
         return ResponseEntity.ok(response);

@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name="accounts")
+@Table(name="profiles")
 public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,9 +21,9 @@ public class Profile {
     private String name;
     private String profile_photo;
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "account_content",
+    @JoinTable(name = "profile_content",
             joinColumns = @JoinColumn(name = "content_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "account_id",
+            inverseJoinColumns = @JoinColumn(name = "profile_id",
                     referencedColumnName = "id"))
     private List<Content> content;
 
