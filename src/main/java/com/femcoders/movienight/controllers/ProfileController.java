@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/profiles")
 @RequiredArgsConstructor
-@CrossOrigin("*")
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST})
 public class ProfileController {
     private final ProfileService profileService;
 
@@ -22,6 +22,7 @@ public class ProfileController {
         return ResponseEntity.ok(response);
     }
 
+    @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("/getProfiles/{userId}")
     public ResponseEntity<Object> getProfilesByUserId(@PathVariable int userId) {
         try {
