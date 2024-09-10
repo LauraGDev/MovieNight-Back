@@ -12,6 +12,7 @@ import com.femcoders.movienight.controllers.requests.LoginRequest;
 import com.femcoders.movienight.controllers.requests.RegisterRequest;
 import com.femcoders.movienight.repositories.UserRepository;
 
+import jakarta.transaction.Transactional;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -46,6 +47,7 @@ public class AuthService {
                 .build();
     }
 
+    @Transactional
     public AuthResponse register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new EmailAlreadyExistsException("Ya existe un usuario con ese email.");
@@ -59,9 +61,8 @@ public class AuthService {
         userRepository.save(user);
 
         Profile profile = new Profile();
-        profile.setUser(user);
         profile.setName(user.getName());
-        profileService.addProfile(profile);
+        profileService.addProfile(profile, profile.getId());
 
         return AuthResponse.builder()
                 .token(jwtService.getToken(user))
