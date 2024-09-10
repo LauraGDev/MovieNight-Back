@@ -1,5 +1,6 @@
 package com.femcoders.movienight.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,12 +15,17 @@ public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id", nullable = false)
+    @JsonIgnore
     private User user;
+
     @Column(nullable = false)
     private String name;
     private String profile_photo;
+
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "profile_content",
             joinColumns = @JoinColumn(name = "content_id", referencedColumnName = "id"),
