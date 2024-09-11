@@ -1,5 +1,6 @@
 package com.femcoders.movienight.services;
 
+import com.femcoders.movienight.exceptions.UserNotFoundException;
 import com.femcoders.movienight.models.Profile;
 import com.femcoders.movienight.models.User;
 import com.femcoders.movienight.repositories.ProfileRepository;
@@ -21,7 +22,8 @@ public class ProfileService {
 
     public ResponseEntity<Object> addProfile(Profile profile, int userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow();
+                .orElseThrow(() -> new UserNotFoundException("No existe un usuario con id "
+                        + userId));
         profile.setUser(user);
         if (profile.getProfile_photo() == null || profile.getProfile_photo().isEmpty()) {
             profile.setProfile_photo("https://res.cloudinary.com/dugbix24o/image/upload/v1725884108/Foto_perfil_inicial_fdrdes.svg");

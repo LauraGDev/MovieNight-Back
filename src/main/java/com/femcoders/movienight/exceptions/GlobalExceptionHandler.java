@@ -20,6 +20,16 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorObject, HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorObject> handleUserNotFoundException(UserNotFoundException ex){
+        ErrorObject errorObject = new ErrorObject();
+        errorObject.setStatusCode(HttpStatus.NOT_FOUND.value());
+        errorObject.setMessage(ex.getMessage());
+        errorObject.setTimestamp(new Date());
+
+        return new ResponseEntity<>(errorObject, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(EmailNotFoundException.class)
     public ResponseEntity<ErrorObject> handleEmailNotFoundException(EmailNotFoundException ex){
         ErrorObject errorObject = new ErrorObject();
