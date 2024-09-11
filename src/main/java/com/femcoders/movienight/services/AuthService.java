@@ -47,7 +47,6 @@ public class AuthService {
                 .build();
     }
 
-    @Transactional
     public AuthResponse register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new EmailAlreadyExistsException("Ya existe un usuario con ese email.");
@@ -62,7 +61,7 @@ public class AuthService {
 
         Profile profile = new Profile();
         profile.setName(user.getName());
-        profileService.addProfile(profile, profile.getId());
+        profileService.addProfile(profile, user.getId());
 
         return AuthResponse.builder()
                 .token(jwtService.getToken(user))
