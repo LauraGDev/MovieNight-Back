@@ -1,5 +1,6 @@
 package com.femcoders.movienight.services;
 
+import com.femcoders.movienight.controllers.responses.GlobalResponse;
 import com.femcoders.movienight.models.Content;
 import com.femcoders.movienight.models.Genre;
 import com.femcoders.movienight.models.Profile;
@@ -22,7 +23,7 @@ public class ContentService {
     private final ProfileService profileService;
 
     @Transactional
-    public ResponseEntity<Object> addProfileContent(int profileId, Content content) {
+    public ResponseEntity<GlobalResponse> addProfileContent(int profileId, Content content) {
         Profile profile = profileService.findById(profileId);
         Content existingContent = contentRepository.findByApiId(content.getApiId());
         if (existingContent != null) {
@@ -45,9 +46,9 @@ public class ContentService {
         if (!profile.getContent().contains(content)) {
             profile.getContent().add(content);
             profileService.updateProfile(profileId, profile);
-            return new ResponseEntity<>("Contenido añadido correctamente a la lista.", HttpStatus.CREATED);
+            return new ResponseEntity<>(new GlobalResponse("Contenido añadido correctamente a la lista."), HttpStatus.CREATED);
         } else {
-            return new ResponseEntity<>("El usuario ya tiene este contenido en su lista.", HttpStatus.CONFLICT);
+            return new ResponseEntity<>(new GlobalResponse("El usuario ya tiene este contenido en su lista."), HttpStatus.CONFLICT);
         }
     }
 }

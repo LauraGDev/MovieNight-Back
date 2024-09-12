@@ -1,6 +1,8 @@
 package com.femcoders.movienight.services;
 
+import com.femcoders.movienight.exceptions.EmailNotFoundException;
 import com.femcoders.movienight.exceptions.UserNotFoundException;
+import com.femcoders.movienight.models.Content;
 import com.femcoders.movienight.models.Profile;
 import com.femcoders.movienight.models.User;
 import com.femcoders.movienight.repositories.ProfileRepository;
@@ -11,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -60,5 +63,11 @@ public class ProfileService {
         } catch (Error e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
+    }
+
+    public List<Content> getContentByProfileId(int profileId) {
+        Optional<Profile> profile = profileRepository.findById(profileId);
+        return profile.map(Profile::getContent).orElseThrow(() ->
+                new EmailNotFoundException("El perfil aún no tiene contenido en su Watchlist."));
     }
 }

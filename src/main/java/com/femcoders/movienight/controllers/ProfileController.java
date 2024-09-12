@@ -1,5 +1,6 @@
 package com.femcoders.movienight.controllers;
 
+import com.femcoders.movienight.models.Content;
 import com.femcoders.movienight.models.Profile;
 import com.femcoders.movienight.services.ProfileService;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,6 @@ public class ProfileController {
         return ResponseEntity.ok(response);
     }
 
-    @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("/getProfiles/{userId}")
     public ResponseEntity<Object> getProfilesByUserId(@PathVariable int userId) {
         try {
@@ -30,10 +30,14 @@ public class ProfileController {
             if (profiles.isEmpty()) {
                 return new ResponseEntity<>("El usuario no tiene ningún perfil", HttpStatus.NO_CONTENT);
             }
-            return new ResponseEntity<>(profiles, HttpStatus.OK);
+            return ResponseEntity.ok(profiles);
         } catch (Exception e) {
             return new ResponseEntity<>("Error al obtener los perfiles", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+    @GetMapping("/{profileId}/watchlist")
+    public List<Content> getContentByProfileId(@PathVariable int profileId) {
+        return profileService.getContentByProfileId(profileId);
+    }
 }
