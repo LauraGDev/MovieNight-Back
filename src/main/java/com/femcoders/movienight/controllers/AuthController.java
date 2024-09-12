@@ -1,9 +1,9 @@
 package com.femcoders.movienight.controllers;
 
-import com.femcoders.movienight.controllers.responses.AuthResponse;
-import com.femcoders.movienight.services.AuthService;
 import com.femcoders.movienight.controllers.requests.LoginRequest;
 import com.femcoders.movienight.controllers.requests.RegisterRequest;
+import com.femcoders.movienight.controllers.responses.AuthResponse;
+import com.femcoders.movienight.services.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

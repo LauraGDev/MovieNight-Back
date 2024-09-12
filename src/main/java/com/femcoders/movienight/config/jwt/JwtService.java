@@ -1,6 +1,6 @@
 package com.femcoders.movienight.config.jwt;
 
-
+import io.github.cdimascio.dotenv.Dotenv;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -18,7 +18,9 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY = "0da6f2c024bdda4ddea1ca2a7d52c194890ca6610155480d230752ea4f410f8b";
+    private static final Dotenv dotenv = Dotenv.load();
+
+    private static final String SECRET_KEY = dotenv.get("JWT_TOKEN");;
     public String getToken(UserDetails user) {
         return getToken(new HashMap<>(), user);
     }
