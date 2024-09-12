@@ -14,6 +14,8 @@ public class Content {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @Column(nullable = false, unique = true)
+    private String apiId;
     @Column(nullable = false)
     private String title;
     private String original_title;
@@ -38,4 +40,5 @@ public class Content {
 
     public Content() {
     }
+
 }

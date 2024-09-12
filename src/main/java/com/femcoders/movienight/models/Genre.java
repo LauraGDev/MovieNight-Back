@@ -15,7 +15,7 @@ public class Genre {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     @Column(nullable = false)
-    private String genre;
+    private String name;
     @ManyToMany(mappedBy = "genres")
     private List<Content> content;
 
