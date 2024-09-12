@@ -20,7 +20,7 @@ public class JwtService {
 
     private static final Dotenv dotenv = Dotenv.load();
 
-    private static final String SECRET_KEY = dotenv.get("JWT_TOKEN");;
+    private static final String SECRET_KEY = dotenv.get("JWT_TOKEN");
     public String getToken(UserDetails user) {
         return getToken(new HashMap<>(), user);
     }
