@@ -1,26 +1,21 @@
 package com.femcoders.movienight.services;
 
 import com.femcoders.movienight.config.jwt.JwtService;
+import com.femcoders.movienight.controllers.requests.LoginRequest;
+import com.femcoders.movienight.controllers.requests.RegisterRequest;
+import com.femcoders.movienight.controllers.responses.AuthResponse;
+import com.femcoders.movienight.controllers.responses.UserDTO;
 import com.femcoders.movienight.exceptions.EmailAlreadyExistsException;
 import com.femcoders.movienight.exceptions.EmailNotFoundException;
-import com.femcoders.movienight.controllers.responses.UserDTO;
 import com.femcoders.movienight.models.Profile;
 import com.femcoders.movienight.models.Role;
 import com.femcoders.movienight.models.User;
-import com.femcoders.movienight.controllers.responses.AuthResponse;
-import com.femcoders.movienight.controllers.requests.LoginRequest;
-import com.femcoders.movienight.controllers.requests.RegisterRequest;
 import com.femcoders.movienight.repositories.UserRepository;
-
-import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import org.springframework.stereotype.Service;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Service
 @RequiredArgsConstructor
