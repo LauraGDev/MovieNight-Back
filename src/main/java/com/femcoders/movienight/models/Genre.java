@@ -1,5 +1,6 @@
 package com.femcoders.movienight.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +16,8 @@ public class Genre {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     @Column(nullable = false)
-    private String genre;
+    private String name;
+    @JsonIgnore
     @ManyToMany(mappedBy = "genres")
     private List<Content> content;
 

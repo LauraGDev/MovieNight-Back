@@ -1,6 +1,8 @@
 package com.femcoders.movienight.services;
 
+import com.femcoders.movienight.exceptions.EmailNotFoundException;
 import com.femcoders.movienight.exceptions.UserNotFoundException;
+import com.femcoders.movienight.models.Content;
 import com.femcoders.movienight.models.Profile;
 import com.femcoders.movienight.models.User;
 import com.femcoders.movienight.repositories.ProfileRepository;
@@ -11,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -34,5 +37,37 @@ public class ProfileService {
 
     public List<Profile> getProfilesByUserId(int userId) {
         return profileRepository.findByUserId(userId);
+    }
+
+    public Profile findById(int profileId) {
+        return profileRepository.findById(profileId).orElseThrow(() -> new RuntimeException("Profile not found"));
+    }
+
+    public ResponseEntity<Object> updateProfile(int profileId, Profile profile) {
+        try {
+            Profile existingProfile = profileRepository.findById(profileId).get();
+            if (profile.getUser() != null){
+                existingProfile.setUser(profile.getUser());
+            }
+            if (profile.getName() != null) {
+                existingProfile.setName(profile.getName());
+            }
+            if (profile.getProfile_photo() != null) {
+                existingProfile.setProfile_photo(profile.getProfile_photo());
+            }
+            if (profile.getContent() != null) {
+                existingProfile.setContent(profile.getContent());
+            }
+            profileRepository.save(existingProfile);
+            return new ResponseEntity<>(existingProfile, HttpStatus.OK);
+        } catch (Error e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public List<Content> getContentByProfileId(int profileId) {
+        Optional<Profile> profile = profileRepository.findById(profileId);
+        return profile.map(Profile::getContent).orElseThrow(() ->
+                new EmailNotFoundException("El perfil aún no tiene contenido en su Watchlist."));
     }
 }
